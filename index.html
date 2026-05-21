@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD2 Agrotech Analytics: Derivative Applications</title>
+    
+    <!-- Tailwind CSS for modern, premium layout styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agriGreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts for professional typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for beautiful, responsive mathematical visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- KaTeX for gorgeous LaTeX math rendering on client side -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <!-- Lucide Icons for clean UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom tooltip and card transitions */
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- Top Decorative Border -->
+    <div class="h-2 bg-gradient-to-r from-emerald-600 via-green-500 to-amber-500"></div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-agriGreen-600 p-2 rounded-xl text-white shadow-md shadow-agriGreen-200">
+                    <i data-lucide="sprout" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg text-slate-900 tracking-tight">MD2 Bioscience Lab</h1>
+                    <p class="text-xs text-agriGreen-700 font-semibold tracking-wider uppercase">SFA: Agrotechnology • Malaysia</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+                <span class="text-xs font-semibold text-slate-600">Calculus Application Core</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Introduction Banner -->
+        <div class="bg-gradient-to-r from-slate-900 to-agriGreen-950 rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="relative z-10 max-w-3xl">
+                <span class="bg-agriGreen-500/20 text-agriGreen-300 border border-agriGreen-500/30 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                    Mathematical Modeling in Agronomy
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight">
+                    Optimizing MD2 Pineapple Growth Rates via First Derivatives
+                </h2>
+                <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+                    How do agrotechnologists in Johor or Sabah know the exact day to fertilize or forecast harvesting yield? 
+                    By tracking the <strong>Absolute Growth Rate (AGR)</strong> — mathematically defined as the first derivative 
+                    <span class="code-font text-agriGreen-300">f'(t)</span> of the fruit's weight function. Explore the interactive 
+                    bioscience dashboard below to analyze metabolic transition phases.
+                </p>
+            </div>
+        </div>
+
+        <!-- Primary Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- LEFT PANEL: Dynamic Control & Growth Visualizer (5 Cols) -->
+            <div class="lg:col-span-5 flex flex-col space-y-8">
+                
+                <!-- Crop Visualizer Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-md flex flex-col items-center relative overflow-hidden">
+                    <div class="absolute top-4 left-4 bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-md font-semibold">
+                        Stage Visualizer
+                    </div>
+                    
+                    <!-- Dynamic Grade Tag -->
+                    <div class="absolute top-4 right-4" id="gradeBadge">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Pineapple SVG Render Container -->
+                    <div class="h-64 flex items-center justify-center my-6 relative w-full">
+                        <svg id="pineappleSvg" viewBox="0 0 100 120" class="h-full drop-shadow-lg smooth-transition">
+                            <!-- Foliage / Crown -->
+                            <g id="crown" class="smooth-transition">
+                                <path d="M50,40 C40,10 42,5 45,0 C48,15 50,25 50,40 Z" fill="#15803d" />
+                                <path d="M50,40 C60,10 58,5 55,0 C52,15 50,25 50,40 Z" fill="#166534" />
+                                <path d="M50,40 C30,15 35,10 40,5 C44,20 48,28 50,40 Z" fill="#15803d" />
+                                <path d="M50,40 C70,15 65,10 60,5 C56,20 52,28 50,40 Z" fill="#166534" />
+                                <path d="M50,40 C25,25 28,18 35,15 C40,25 46,32 50,40 Z" fill="#16a34a" />
+                                <path d="M50,40 C75,25 72,18 65,15 C60,25 54,32 50,40 Z" fill="#15803d" />
+                            </g>
+                            <!-- Fruit Body -->
+                            <g id="fruitBody" class="smooth-transition">
+                                <ellipse cx="50" cy="75" rx="25" ry="32" id="bodyBase" />
+                                <!-- Pattern Overlays (Hexagonal Nodes) -->
+                                <path d="M50,45 L50,105 M35,50 L65,100 M65,50 L35,100 M27,75 L73,75 M32,60 L68,90 M68,60 L32,90" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" stroke-linecap="round" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Dynamic Metric Readouts -->
+                    <div class="grid grid-cols-2 gap-4 w-full mt-4 border-t border-slate-100 pt-4">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                            <span class="text-xs text-slate-500 font-semibold uppercase block">Age of Fruit</span>
+                            <span id="metricWeek" class="text-xl font-black text-slate-900 code-font">0.0</span>
+                            <span class="text-xs text-slate-600 font-medium">weeks</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                            <span class="text-xs text-slate-500 font-semibold uppercase block">Fruit Weight</span>
+                            <span id="metricWeight" class="text-xl font-black text-slate-900 code-font">0.0</span>
+                            <span class="text-xs text-slate-600 font-medium">grams</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Control Slider Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <label for="weekSlider" class="font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-5 h-5 text-agriGreen-600"></i>
+                            Adjust Growth Timeline
+                        </label>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded font-bold uppercase code-font">
+                            t = <span id="sliderValDisplay">10.0</span> wk
+                        </span>
+                    </div>
+                    
+                    <input type="range" id="weekSlider" min="0" max="20" step="0.1" value="10" 
+                           class="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-agriGreen-600 hover:accent-agriGreen-700 focus:outline-none mb-4">
+                    
+                    <div class="flex justify-between text-xs text-slate-400 font-bold code-font">
+                        <span>0.0 (Flower Set)</span>
+                        <span>10.0 (Mid-term)</span>
+                        <span>20.0 (Harvest)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT PANEL: Analytical Chart & Layman Interpretations (7 Cols) -->
+            <div class="lg:col-span-7 flex flex-col space-y-8">
+                
+                <!-- Chart Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-md flex flex-col">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-lg flex items-center gap-2">
+                                <i data-lucide="activity" class="w-5 h-5 text-red-500"></i>
+                                Real-Time Derivative Analytics
+                            </h3>
+                            <p class="text-xs text-slate-500">Click anywhere on the graph to sample dynamic plant tissue metrics.</p>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="flex items-center gap-1 font-semibold text-agriGreen-600">
+                                <span class="w-3 h-3 rounded-full bg-agriGreen-600 inline-block"></span> Weight (g)
+                            </span>
+                            <span class="flex items-center gap-1 font-semibold text-blue-600">
+                                <span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Growth Rate (g/wk)
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Wrapper -->
+                    <div class="relative h-72 sm:h-80 w-full">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Layman Explanation & Interpretation Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-md">
+                    <h3 class="font-extrabold text-slate-900 text-lg flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
+                        <i data-lucide="microscope" class="w-5 h-5 text-indigo-500"></i>
+                        Agrotechnologist's Field Assessment
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        
+                        <!-- Rate of Change Metric -->
+                        <div class="md:col-span-4 bg-gradient-to-br from-indigo-50 to-blue-50 border border-blue-100 rounded-xl p-4 flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">Instantaneous AGR</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="metricAGR" class="text-3xl font-black text-blue-900 code-font">180.0</span>
+                                    <span class="text-xs font-bold text-blue-700">g/wk</span>
+                                </div>
+                                <span class="text-[10px] text-blue-500 font-semibold block mt-1 code-font">f'(t) derivative value</span>
+                            </div>
+                            
+                            <div class="mt-4 pt-3 border-t border-blue-100/60">
+                                <span class="text-xs text-slate-500 block font-semibold uppercase">Growth Velocity</span>
+                                <span id="accelerationState" class="text-xs font-bold text-slate-700 flex items-center gap-1 mt-1">
+                                    <!-- Populated by JS -->
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Bioscience Explanation Text -->
+                        <div class="md:col-span-8 flex flex-col justify-between">
+                            <div>
+                                <h4 id="stageTitle" class="font-extrabold text-slate-900 text-sm flex items-center gap-2 text-agriGreen-800">
+                                    <!-- Dynamic Title -->
+                                </h4>
+                                <p id="stageExplanation" class="text-sm text-slate-600 mt-2 leading-relaxed">
+                                    <!-- Dynamic Explanation -->
+                                </p>
+                            </div>
+                            
+                            <div class="bg-slate-50 border border-slate-100 p-3 rounded-lg mt-4 flex items-start gap-2.5">
+                                <i data-lucide="info" class="w-4 h-4 text-agriGreen-700 mt-0.5 shrink-0"></i>
+                                <p class="text-xs text-slate-500 leading-snug">
+                                    <strong>Agrotech Action:</strong> <span id="agriActionText">Apply targeted potassium and schedule monitoring.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BOTTOM SECTION: Scientific Breakdown & Mathematical Modeling -->
+        <section class="mt-12 bg-white rounded-2xl border border-slate-200 shadow-lg p-6 sm:p-8">
+            <h3 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-3 border-b border-slate-200 pb-4 mb-6">
+                <i data-lucide="book-open" class="w-6 h-6 text-agriGreen-700"></i>
+                Mathematical Formulation & Derivative Derivation
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Theory Column -->
+                <div class="lg:col-span-6 space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+                    <h4 class="font-bold text-slate-900 text-base">The MD2 Pineapple Logistic Growth Curve</h4>
+                    <p>
+                        In bioscience, unlimited exponential growth is unrealistic due to nutrient, space, and biological limits.
+                        Therefore, a <strong>three-parameter Sigmoidal Logistic growth model</strong> is utilized to represent the cumulative fresh fruit weight of the MD2 pineapple.
+                    </p>
+                    
+                    <p class="bg-slate-50 p-4 rounded-xl border border-slate-100 font-medium text-slate-800">
+                        Let \(f(t)\) be the cumulative fruit weight in grams at week \(t\) post-flower induction:
+                        $$f(t) = \frac{W_{\max}}{1 + e^{-k(t - t_0)}} = \frac{1800}{1 + e^{-0.4(t - 10)}}$$
+                    </p>
+
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl text-xs sm:text-sm text-emerald-950">
+                        <span class="font-extrabold text-emerald-800 uppercase block mb-1">Parameter Key for MD2 Pineapple</span>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>\(W_{\max} = 1800\,\text{g}\)</strong>: Carrying capacity representing the target maximum mature weight of a premium export Grade A pineapple fruit.</li>
+                            <li><strong>\(k = 0.4\,\text{wk}^{-1}\)</strong>: Specific Growth Rate Coefficient representing growth velocity.</li>
+                            <li><strong>\(t_0 = 10\,\text{weeks}\)</strong>: Inflection point representing the exact time of maximum instantaneous development.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Derivation & Quotient Rule Column -->
+                <div class="lg:col-span-6 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-base">Step-by-Step Analytical Derivative Derivation</h4>
+                    <p class="text-slate-600 text-sm">
+                        To compute the rate of change of weight accumulation, we apply the chain and quotient rules to derive \(f'(t)\):
+                    </p>
+
+                    <div class="bg-slate-950 text-slate-200 p-5 rounded-xl border border-slate-800 overflow-x-auto text-xs sm:text-sm code-font space-y-3">
+                        <div class="text-slate-400"># Let u(t) = 1 + e^{-0.4(t - 10)}</div>
+                        <div>f(t) = 1800 * [u(t)]⁻¹</div>
+                        
+                        <div class="text-slate-400 mt-2"># Apply the Chain Rule: f'(t) = -1800 * [u(t)]⁻² * u'(t)</div>
+                        <div>u'(t) = d/dt [1 + e^{-0.4(t - 10)}] = -0.4 * e^{-0.4(t - 10)}</div>
+                        
+                        <div class="text-slate-400 mt-2"># Substitute back and simplify:</div>
+                        <div class="text-amber-400 font-bold">
+                            f'(t) = \frac{1800 * 0.4 * e^{-0.4(t - 10)}}{(1 + e^{-0.4(t - 10)})^2} = \frac{720 * e^{-0.4(t-10)}}{(1 + e^{-0.4(t-10)})^2}
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 text-xs sm:text-sm text-slate-600">
+                        <span class="font-bold text-slate-900 block mb-1">Why This Matters to Agrotechnologists:</span>
+                        The value \(f'(t)\) is the <strong>Absolute Growth Rate (AGR)</strong>. It measures the grams of biomass added per week.
+                        When \(f''(t) > 0\), development is accelerating; when \(f''(t) < 0\), development is decelerating towards final ripening.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Citations & References -->
+            <div class="mt-8 border-t border-slate-200 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs text-slate-400 font-medium">
+                <div>
+                    <span class="block">Scenario based on agronomic datasets for MD2 Cultivar:</span>
+                    <span class="text-slate-500 font-semibold flex items-center gap-1 mt-0.5">
+                        <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                        MARDI Manual on Pineapple Production (3rd Edition) & Malaysian Pineapple Industry Board (MPIB) guidelines.
+                    </span>
+                </div>
+                <div class="bg-slate-100 border border-slate-200 px-3 py-1 rounded-md text-slate-500">
+                    SFA: Agrotechnology Syllabus Reference • Calculus I
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- CONSTANTS ---
+        const L_CAPACITY = 1800; // Carrying capacity (grams)
+        const K_RATE = 0.4;      // Growth coefficient (per week)
+        const T0_INFLECTION = 10; // Mid-point inflection (weeks)
+
+        // --- MATH FUNCTIONS ---
+        // f(t) = Cumulative Weight
+        function getWeightAt(t) {
+            return L_CAPACITY / (1 + Math.exp(-K_RATE * (t - T0_INFLECTION)));
+        }
+
+        // f'(t) = Absolute Growth Rate (First Derivative)
+        function getAGRAt(t) {
+            const expTerm = Math.exp(-K_RATE * (t - T0_INFLECTION));
+            const denominator = Math.pow(1 + expTerm, 2);
+            return (L_CAPACITY * K_RATE * expTerm) / denominator;
+        }
+
+        // f''(t) = Growth Acceleration (Second Derivative)
+        // Used to define acceleration vs deceleration
+        function getAccelerationAt(t) {
+            const expTerm = Math.exp(-K_RATE * (t - T0_INFLECTION));
+            const num = L_CAPACITY * Math.pow(K_RATE, 2) * expTerm * (expTerm - 1);
+            const den = Math.pow(1 + expTerm, 3);
+            return num / den;
+        }
+
+        // --- EXPLANATION & CLASSIFICATION MAPPINGS ---
+        function getMD2Grade(weight) {
+            if (weight >= 1700) {
+                return { name: "Grade A (Export Premium)", color: "bg-amber-500 text-white border-amber-600" };
+            } else if (weight >= 1300) {
+                return { name: "Grade B (Premium Local)", color: "bg-emerald-500 text-white border-emerald-600" };
+            } else if (weight >= 600) {
+                return { name: "Grade C (Processing Class)", color: "bg-blue-500 text-white border-blue-600" };
+            } else {
+                return { name: "Immature (Fruitlet/Bud)", color: "bg-slate-400 text-white border-slate-500" };
+            }
+        }
+
+        function getBiologicalAssessment(t) {
+            const weight = getWeightAt(t);
+            const rate = getAGRAt(t);
+            const acceleration = getAccelerationAt(t);
+
+            if (t <= 4) {
+                return {
+                    title: "Phase I: Post-Anthesis Cell Division",
+                    explanation: `At week ${t.toFixed(1)}, the newly fertilized MD2 fruitlet is in early cell division. Cumulative weight is low (${weight.toFixed(0)}g). The first derivative is small (~${rate.toFixed(1)} g/wk), indicating that while biomass is expanding exponentially relative to its starting size, actual physical mass gain remains slow. Tissue cells are multiplying actively rather than swelling with water.`,
+                    action: "Ensure optimal basal nitrogen fertilizer and constant irrigation. Shield delicate buds."
+                };
+            } else if (t > 4 && t < 10) {
+                return {
+                    title: "Phase II: Cellular Elongation & Acceleration",
+                    explanation: `At week ${t.toFixed(1)}, the fruit is in a rapid acceleration phase. The derivative is increasing, meaning the growth velocity is gaining momentum each week (f''(t) > 0). Individual cells are actively expanding and accumulating water and primary photosynthates. Cumulative weight is now ${weight.toFixed(0)}g.`,
+                    action: "Foliar application of Potassium Nitrate (KNO3) and Boron is critical to feed this escalating demand."
+                };
+            } else if (Math.abs(t - 10) <= 0.2) {
+                return {
+                    title: "Phase III: The Inflection Point (Maximum AGR)",
+                    explanation: `Week 10 is the mathematical Inflection Point (t₀). Here, growth rate reaches its absolute biological peak of ${rate.toFixed(1)} grams per week! The second derivative is exactly zero (f''(t) = 0). Metabolic sink strength is maximized, meaning the plant is transforming soil nutrients and sunshine into fruit mass at peak efficiency.`,
+                    action: "Peak metabolic demand! Maintain continuous soil moisture. Any drought stress now will severely stunt final fruit size."
+                };
+            } else if (t > 10 && t <= 15) {
+                return {
+                    title: "Phase IV: Growth Deceleration & Starch Filling",
+                    explanation: `At week ${t.toFixed(1)}, cumulative weight has reached ${weight.toFixed(0)}g (Grade C/B). However, the first derivative is now descending (~${rate.toFixed(1)} g/wk). The growth velocity is slowing down (f''(t) < 0). Biological resources are transitioning from expanding structural volume to filling interior vacuoles with sugars, starches, and Vitamin C.`,
+                    action: "Begin propping (staking) plants to prevent lodging under the heavy weight of the growing MD2 fruit."
+                };
+            } else {
+                return {
+                    title: "Phase V: Harvest Maturity & Sugar Balance (Brix Index)",
+                    explanation: `By week ${t.toFixed(1)}, the growth curve is flattening. The derivative has dropped below 15 g/wk, indicating biomass accumulation has nearly halted as the fruit reaches mature capacity of ${weight.toFixed(1)}g. The fruit is transitioning through Shell Color Index 1 to 3 (ripening from green to golden yellow). Acids are breaking down, and Brix (sugar) levels are stabilizing.`,
+                    action: "Monitor Shell Color Index. Plan harvesting rounds for Grade A export logistics immediately before over-ripening."
+                };
+            }
+        }
+
+        // --- DOM ELEMENTS ---
+        const slider = document.getElementById('weekSlider');
+        const sliderValDisplay = document.getElementById('sliderValDisplay');
+        const metricWeek = document.getElementById('metricWeek');
+        const metricWeight = document.getElementById('metricWeight');
+        const metricAGR = document.getElementById('metricAGR');
+        const accelerationState = document.getElementById('accelerationState');
+        const gradeBadge = document.getElementById('gradeBadge');
+        const stageTitle = document.getElementById('stageTitle');
+        const stageExplanation = document.getElementById('stageExplanation');
+        const agriActionText = document.getElementById('agriActionText');
+
+        // --- CHART SETUP ---
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        
+        // Generate continuous data arrays for the curves
+        const chartLabels = [];
+        const weightData = [];
+        const agrData = [];
+
+        for (let i = 0; i <= 20; i += 0.5) {
+            chartLabels.push(i);
+            weightData.push(getWeightAt(i));
+            agrData.push(getAGRAt(i));
+        }
+
+        // Configuration of dual-axis Chart
+        const growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: 'Fruit Weight f(t) (g)',
+                        data: weightData,
+                        borderColor: '#16a34a', // Emerald Green
+                        borderWidth: 3,
+                        backgroundColor: 'rgba(22, 163, 74, 0.05)',
+                        fill: true,
+                        yAxisID: 'yWeight',
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHitRadius: 10
+                    },
+                    {
+                        label: "Growth Rate f'(t) (g/wk)",
+                        data: agrData,
+                        borderColor: '#2563eb', // Indigo Blue
+                        borderWidth: 2.5,
+                        borderDash: [5, 5],
+                        fill: false,
+                        yAxisID: 'yAGR',
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHitRadius: 10
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false // Handled in custom header
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            title: (context) => `Timeline: ${context[0].label} Weeks`,
+                            label: (context) => {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(1);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Weeks Post-Anthesis (t)',
+                            font: { weight: 'bold', family: 'Inter' }
+                        },
+                        grid: { display: false }
+                    },
+                    yWeight: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Cumulative Weight (g)',
+                            font: { weight: 'bold', color: '#16a34a' }
+                        },
+                        min: 0,
+                        max: 2000,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    },
+                    yAGR: {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: "AGR: f'(t) (g/week)",
+                            font: { weight: 'bold', color: '#2563eb' }
+                        },
+                        min: 0,
+                        max: 200,
+                        grid: { display: false } // Avoid clashing grid lines
+                    }
+                },
+                onClick: (event, activeElements) => {
+                    if (activeElements.length > 0) {
+                        const index = activeElements[0].index;
+                        const clickedWeek = chartLabels[index];
+                        slider.value = clickedWeek;
+                        updateDashboard(clickedWeek);
+                    }
+                }
+            }
+        });
+
+        // --- UPDATE SYSTEM ENGINE ---
+        function updateDashboard(t) {
+            t = parseFloat(t);
+
+            // 1. Math Evaluations
+            const currentWeight = getWeightAt(t);
+            const currentAGR = getAGRAt(t);
+            const currentAcc = getAccelerationAt(t);
+
+            // 2. UI Metrics Updating
+            slider.value = t;
+            sliderValDisplay.innerText = t.toFixed(1);
+            metricWeek.innerText = t.toFixed(1);
+            metricWeight.innerText = Math.round(currentWeight);
+            metricAGR.innerText = currentAGR.toFixed(1);
+
+            // 3. Accelerating vs Decelerating Check
+            if (Math.abs(currentAcc) < 0.5) {
+                accelerationState.innerHTML = `<i data-lucide="minus" class="w-4 h-4 text-slate-500"></i> Constant (At Inflection)`;
+            } else if (currentAcc > 0) {
+                accelerationState.innerHTML = `<i data-lucide="trending-up" class="w-4 h-4 text-emerald-500"></i> Accelerating (+${currentAcc.toFixed(1)})`;
+            } else {
+                accelerationState.innerHTML = `<i data-lucide="trending-down" class="w-4 h-4 text-amber-500"></i> Decelerating (${currentAcc.toFixed(1)})`;
+            }
+
+            // 4. Update Crop Grade Badge
+            const gradeInfo = getMD2Grade(currentWeight);
+            gradeBadge.className = `absolute top-4 right-4 text-xs font-black tracking-wide uppercase px-3 py-1.5 rounded-full border shadow-sm ${gradeInfo.color}`;
+            gradeBadge.innerText = gradeInfo.name;
+
+            // 5. Update Explanatory Texts
+            const bioAssess = getBiologicalAssessment(t);
+            stageTitle.innerText = bioAssess.title;
+            stageExplanation.innerText = bioAssess.explanation;
+            agriActionText.innerText = bioAssess.action;
+
+            // 6. Update Dynamic Pineapple SVG Visualizer
+            updatePineappleSVG(t, currentWeight);
+
+            // 7. Update Chart Highlight Indicator
+            updateChartHighlight(t);
+
+            // Re-render Lucide icons dynamically injected
+            lucide.createIcons();
+        }
+
+        // --- DYNAMIC SVG STYLING ENGINE ---
+        function updatePineappleSVG(t, weight) {
+            const minScale = 0.45;
+            const maxScale = 1.15;
+            // Map weight range (32g to 1800g) to scale range (minScale to maxScale)
+            const scaleFactor = minScale + ((weight - 32) / (1800 - 32)) * (maxScale - minScale);
+            
+            // Scaled scaling factor applied via CSS transform to scale from center base
+            const fruitBody = document.getElementById('fruitBody');
+            const crown = document.getElementById('crown');
+            const pineappleSvg = document.getElementById('pineappleSvg');
+
+            // Apply scaling animation dynamically
+            fruitBody.style.transform = `scale(${scaleFactor})`;
+            fruitBody.style.transformOrigin = '50px 95px';
+            crown.style.transform = `scale(${scaleFactor})`;
+            crown.style.transformOrigin = '50px 45px';
+
+            // Determine biological color transition
+            // Early Stage (t <= 8): Organic green shades
+            // Mid Stage (8 < t <= 14): Yellowish green
+            // Ripe Stage (14 < t <= 20): Ripe export-ready gold
+            let bodyColor = '#065f46'; // Emerald 800
+            let crownColor = '#15803d'; // Green 700
+
+            if (t <= 8) {
+                bodyColor = `rgb(${Math.round(20 + t*10)}, ${Math.round(110 + t*5)}, 70)`; // Shift from darker emerald to brighter lime
+            } else if (t > 8 && t <= 14) {
+                const ratio = (t - 8) / 6;
+                const r = Math.round(100 + ratio * 120); // Turn to orange-yellow spectrum
+                const g = Math.round(150 + ratio * 30);
+                bodyColor = `rgb(${r}, ${g}, 40)`;
+            } else {
+                const ratio = Math.min((t - 14) / 6, 1.0);
+                const r = Math.round(220 + ratio * 35);
+                const g = Math.round(180 - ratio * 40); // Rich warm yellow gold
+                bodyColor = `rgb(${r}, ${g}, 20)`;
+            }
+
+            document.getElementById('bodyBase').setAttribute('fill', bodyColor);
+        }
+
+        // --- CHART INSTANT CURSOR UPDATE ---
+        let verticalLinePlugin = null;
+
+        function updateChartHighlight(selectedWeek) {
+            // Find closest index in dataset to target
+            const dataset = growthChart.data.labels;
+            let closestIndex = 0;
+            let minDiff = Infinity;
+            
+            dataset.forEach((val, i) => {
+                const diff = Math.abs(val - selectedWeek);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = i;
+                }
+            });
+
+            // Set dynamic highlighted element on the chart
+            growthChart.setActiveElements([
+                { datasetIndex: 0, index: closestIndex },
+                { datasetIndex: 1, index: closestIndex }
+            ]);
+            
+            growthChart.update('none'); // Update smoothly without triggers
+        }
+
+        // --- INITIALIZER ---
+        window.onload = function() {
+            // Register Slider Change Event Listeners
+            slider.addEventListener('input', (e) => {
+                updateDashboard(e.target.value);
+            });
+
+            // Set dashboard initial render point at week 10.0 (the inflection peak)
+            updateDashboard(10.0);
+            
+            // Set SVG transitions smoothly after initial rendering
+            setTimeout(() => {
+                document.getElementById('fruitBody').classList.add('smooth-transition');
+                document.getElementById('crown').classList.add('smooth-transition');
+            }, 100);
+        }
+    </script>
+</body>
+</html>
